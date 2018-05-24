@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.jbielak.javajokes.Joker;
@@ -12,10 +13,13 @@ import com.jbielak.javajokes.Joker;
 
 public class MainActivity extends AppCompatActivity {
 
+    private ProgressBar mProgressBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mProgressBar = (ProgressBar) findViewById(R.id.progress_bar);
     }
 
 
@@ -42,10 +46,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void tellJoke(View view) {
-        //Toast.makeText(this, "derp", Toast.LENGTH_SHORT).show();
-        Joker joker = new Joker();
-        Toast.makeText(this, joker.getJoke(), Toast.LENGTH_SHORT).show();
-    }
+        new EndpointsAsyncTask(new EndpointsAsyncTask.LoadingListener() {
+            @Override
+            public void onStartLoading() {
+                mProgressBar.setVisibility(View.VISIBLE);
+            }
 
+            @Override
+            public void onFinishLoading() {
+                mProgressBar.setVisibility(View.GONE);
+            }
+        }).execute(this);
+    }
 
 }
