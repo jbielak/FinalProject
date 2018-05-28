@@ -74,14 +74,12 @@ public class EndpointsAsyncTask  extends AsyncTask<Context, Void, String> {
     @Override
     protected void onPostExecute(final String s) {
         if (mLoadingListener != null) {
-            mLoadingListener.onFinishLoading();
+            mLoadingListener.onFinishLoading(s);
         }
-        mContext.startActivity(new Intent(mContext, JokeActivity.class)
-                .putExtra(JokeActivity.EXTRA_JOKE, s));
     }
 
     public interface LoadingListener {
         void onStartLoading();
-        void onFinishLoading();
+        void onFinishLoading(String s);
     }
 }

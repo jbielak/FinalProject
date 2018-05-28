@@ -1,5 +1,6 @@
 package com.udacity.gradle.builditbigger;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -7,9 +8,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 
+import com.jbielak.jokesdisplay.JokeActivity;
+
 public class MainActivity extends AppCompatActivity {
 
     private ProgressBar mProgressBar;
+    private String joke = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,10 +53,16 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFinishLoading() {
-                mProgressBar.setVisibility(View.GONE);
+            public void onFinishLoading(String s) {
+                joke = s;
+                displayJoke();
             }
         }).execute(this);
     }
 
+    private void displayJoke() {
+        mProgressBar.setVisibility(View.GONE);
+        startActivity(new Intent(getApplicationContext(), JokeActivity.class)
+                .putExtra(JokeActivity.EXTRA_JOKE, joke));
+    }
 }
